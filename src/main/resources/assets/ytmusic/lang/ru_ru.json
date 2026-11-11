@@ -1,0 +1,11 @@
+{
+  "key.category.ytmusic.main": "YT Music",
+  "key.ytmusic.open": "Открыть окно плеера",
+  "key.ytmusic.playpause": "Пуск / Пауза",
+  "key.ytmusic.next": "Следующий трек",
+  "key.ytmusic.prev": "Предыдущий трек",
+  "key.ytmusic.vol_up": "Громкость +",
+  "key.ytmusic.vol_down": "Громкость -",
+  "key.ytmusic.mute": "Выключить / включить звук",
+  "key.ytmusic.style": "Стиль: Minecraft / модерн"
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "ytmusic",
+  "version": "${version}",
+  "name": "YT Music In-Game",
+  "description": "A movable, hideable YouTube Music player window inside Minecraft (embedded Chromium via Rinku).",
+  "authors": ["You"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.ytmusic.ingame.YtMusicClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*",
+    "rinku": ">=3.0.1"
+  }
+}
