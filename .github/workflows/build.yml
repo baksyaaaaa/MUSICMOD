@@ -48,7 +48,7 @@ jobs:
         run: |
           VER=$(grep '^mod_version=' gradle.properties | cut -d= -f2)
           JAR=$(ls build/libs/*.jar | grep -v -- '-sources' | head -n1)
-          TAG="v$VER"
+          TAG="build-${{ github.run_number }}"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$JAR" --clobber
           else
