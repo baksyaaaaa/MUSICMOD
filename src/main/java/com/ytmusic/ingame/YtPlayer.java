@@ -65,10 +65,11 @@ public final class YtPlayer {
           + "a:ae?(ae.getAttribute('title')||ae.textContent.trim()):'',"
           + "i:ie?(ie.src||''):'',"
           + "c:v?Math.floor(v.currentTime):0,"
+          + "f:v?Math.round(v.currentTime*1000):0,"
           + "d:(v&&isFinite(v.duration))?Math.floor(v.duration):0};"
           + "var j=JSON.stringify(o);"
           + "if(j!==last){last=j;console.error('" + PREFIX + "'+j);}"
-          + "},1000);"
+          + "},250);"
           + "})();";
 
     private static final String JS_TOGGLE =
@@ -91,6 +92,8 @@ public final class YtPlayer {
     private volatile String artist = "";
     private volatile String pageTitle = "";
     private volatile int pos;
+    private volatile long posMs = -1;      // the exact play position (ms) at the moment of the last report
+    private volatile long posNanos = 0;    // when that report arrived
     private volatile int dur;
     private volatile String thumb = "";
 
@@ -117,6 +120,13 @@ public final class YtPlayer {
     public String title() { return title; }
     public String artist() { return artist; }
     public int position() { return pos; }
+
+    /** the exact play position in seconds, counting on from the last report (used for lyrics) */
+    public double positionPrecise() {
+        long ms = posMs;
+        if (ms < 0) return pos;
+        return ms / 1000.0 + (playing ? (System.nanoTime() - posNanos) / 1e9 : 0.0);
+    }
     public int duration() { return dur; }
 
     /** Called by the card overlay every frame it is drawn; keeps the cover browser alive. */
@@ -242,6 +252,10 @@ public final class YtPlayer {
             int dot = a.indexOf('\u2022');
             artist = (dot >= 0 ? a.substring(0, dot) : a).trim();
             pos = o.has("c") ? o.get("c").getAsInt() : 0;
+            if (o.has("f")) {
+                posMs = o.get("f").getAsLong();
+                posNanos = System.nanoTime();
+            }
             dur = o.has("d") ? o.get("d").getAsInt() : 0;
             String img = str(o, "i");
             thumb = img.startsWith("https://") ? img.replaceFirst("=w\\d+-h\\d+", "=w226-h226") : "";
